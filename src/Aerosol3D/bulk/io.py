@@ -44,6 +44,8 @@ def bulk_to_netcdf(bulk: BulkAerosolOpticsData, path: str) -> None:
 
     if bulk.tau_ref is not None:
         attrs["tau_ref"] = float(bulk.tau_ref)
+    if bulk.effective_density_kg_m3 is not None:
+        attrs["effective_density_kg_m3"] = float(bulk.effective_density_kg_m3)
     if bulk.concentration_method is not None:
         attrs["concentration_method"] = bulk.concentration_method
     if bulk.concentration_kwargs is not None:
@@ -75,6 +77,11 @@ def bulk_to_netcdf(bulk: BulkAerosolOpticsData, path: str) -> None:
         data_vars["per_radius_beta"] = (
             ["radius", "wavelength", "legendre_order"],
             bulk.per_radius_beta,
+        )
+    if bulk.legendre_moments_beta is not None:
+        data_vars["legendre_moments_beta"] = (
+            ["wavelength", "legendre_order"],
+            bulk.legendre_moments_beta,
         )
 
     # Optional phase function grids
@@ -132,6 +139,9 @@ def bulk_from_netcdf(path: str) -> BulkAerosolOpticsData:
     per_radius_C_ext = ds["per_radius_C_ext_nm2"].values if "per_radius_C_ext_nm2" in ds else None
     per_radius_C_sca = ds["per_radius_C_sca_nm2"].values if "per_radius_C_sca_nm2" in ds else None
     per_radius_beta = ds["per_radius_beta"].values if "per_radius_beta" in ds else None
+    legendre_moments_beta = (
+        ds["legendre_moments_beta"].values if "legendre_moments_beta" in ds else None
+    )
 
     theta_rad = np.radians(ds["theta_deg"].values) if "theta_deg" in ds else None
     phi_rad = np.radians(ds["phi_deg"].values) if "phi_deg" in ds else None
@@ -144,6 +154,11 @@ def bulk_from_netcdf(path: str) -> BulkAerosolOpticsData:
         fallback_wavelengths = None
 
     tau_ref = float(ds.attrs["tau_ref"]) if "tau_ref" in ds.attrs else None
+    effective_density_kg_m3 = (
+        float(ds.attrs["effective_density_kg_m3"])
+        if "effective_density_kg_m3" in ds.attrs
+        else None
+    )
     concentration_method = ds.attrs.get("concentration_method")
     concentration_kwargs_raw = ds.attrs.get("concentration_kwargs")
     concentration_kwargs = (
@@ -171,6 +186,8 @@ def bulk_from_netcdf(path: str) -> BulkAerosolOpticsData:
         per_radius_C_ext=per_radius_C_ext,
         per_radius_C_sca=per_radius_C_sca,
         per_radius_beta=per_radius_beta,
+        legendre_moments_beta=legendre_moments_beta,
+        effective_density_kg_m3=effective_density_kg_m3,
         r_eff_nm=r_eff_nm,
         interpolation_method=ds.attrs.get("interpolation_method", ""),
         integration_method=ds.attrs.get("integration_method", ""),
