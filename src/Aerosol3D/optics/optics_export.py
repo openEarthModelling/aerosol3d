@@ -24,6 +24,7 @@ class AerosolOpticsData:
     SSA: np.ndarray
     g: np.ndarray
     r_eff_nm: float
+    density_kg_m3: float | None = None
 
     theta_rad: np.ndarray | None = None
     phi_rad: np.ndarray | None = None
@@ -58,6 +59,8 @@ class AerosolOpticsData:
             "solver": self.solver,
             "material": self.material,
         }
+        if self.density_kg_m3 is not None:
+            attrs["density_kg_m3"] = float(self.density_kg_m3)
 
         if self.P11 is not None:
             assert self.theta_rad is not None and self.phi_rad is not None
@@ -120,6 +123,7 @@ class AerosolOpticsData:
             SSA=ds["SSA"].values,
             g=ds["g"].values,
             r_eff_nm=float(ds.attrs["r_eff_nm"]),
+            density_kg_m3=float(ds.attrs["density_kg_m3"]) if "density_kg_m3" in ds.attrs else None,
             theta_rad=theta_rad,
             phi_rad=phi_rad,
             P11=P11,
@@ -139,6 +143,7 @@ def from_optical_results(
     results: list[OpticalResult],
     n_legendre: int = 32,
     material_name: str = "",
+    density_kg_m3: float | None = None,
 ) -> AerosolOpticsData:
     """Build AerosolOpticsData from a list of OpticalResult.
 
@@ -148,6 +153,8 @@ def from_optical_results(
         results: List of OpticalResult, one per wavelength.
         n_legendre: Number of Legendre moments to compute.
         material_name: Optional material name for metadata.
+        density_kg_m3: Material density in kg/m^3 (convert from
+            Material.density in g/cm^3 x1000).
 
     Returns:
         AerosolOpticsData with all extracted optical properties.
@@ -202,6 +209,7 @@ def from_optical_results(
         SSA=SSA,
         g=g,
         r_eff_nm=r_eff_nm,
+        density_kg_m3=density_kg_m3,
         theta_rad=theta_rad,
         phi_rad=phi_rad,
         P11=P11,
