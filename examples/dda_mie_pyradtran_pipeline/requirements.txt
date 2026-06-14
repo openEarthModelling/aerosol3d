@@ -1,7 +1,0 @@
-# Additional dependencies for the DDA-Mie-pyRadtran pipeline example
-# Assumes Aerosol3D and pyRadtran are already installed in editable mode
-
-xarray>=2023.0
-netCDF4>=1.6
-matplotlib>=3.5
-numpy>=1.21
