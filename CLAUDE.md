@@ -73,10 +73,10 @@ src/Aerosol3D/
 
 ## Example Pipeline
 
-`examples/dda_mie_pyradtran_pipeline/` — three-stage DDA vs Mie comparison:
+`examples/bulk_pyradtran_pipeline/` — three-stage bulk aerosol optics → pyRadtran DISORT pipeline:
 
-1. `compute_optics.py` — Compute optical properties, save to NetCDF via AerosolOpticsData
-2. `run_radiative_transfer.py` — Run DISORT RT via pyRadtran (requires libRadtran)
-3. `compare_results.py` — Compare optical properties and RT results
+1. `compute_bulk_optics.py` — Build bulk aerosol optics from a size distribution (per-radius Mie via `BulkOpticsBuilder`), save to NetCDF via `BulkAerosolOpticsData` (auto-fills `effective_density_kg_m3` and dual-form Legendre moments)
+2. `run_radiative_transfer.py` — Feed bulk optics into pyRadtran DISORT via `BulkSpecies` (requires libRadtran)
+3. `compare_results.py` — Compare bulk (size-distribution-integrated) vs monodisperse@r_eff RT results
 
 Set `PYRADTRAN_DATA_PATH` to libRadtran data directory before running RT.
