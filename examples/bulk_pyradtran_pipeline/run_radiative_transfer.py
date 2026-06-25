@@ -22,11 +22,8 @@ import numpy as np
 from Aerosol3D.bulk import BulkAerosolOpticsData
 
 from pyradtran import Scene, Runner
-from pyradtran.models.aerosol_composite import (
-    BulkSpecies,
-    CompositeAerosol,
-    LoadedSpecies,
-)
+from pyradtran.models.aerosol_composite import BulkSpecies, CompositeAerosol
+from pyradtran.models.blocks import MassProfile, PlacedBlock
 
 from config import (
     ALTITUDE_GRID_KM,
@@ -65,7 +62,8 @@ def compute_mass_profile(
 
     The returned profile is expressed on the pyRadtran layer grid
     (length ``len(altitude_grid_km) - 1``), indexed from the TOP layer
-    DOWNWARDS to match ``LoadedSpecies``'s descending-altitude convention.
+    DOWNWARDS to match the descending-altitude layer order used by
+    ``MassProfile`` / ``CompositeAerosol``.
     """
     idx_550 = int(np.argmin(np.abs(bulk.wavelength_nm - 550.0)))
     C_ext_550_nm2 = float(bulk.C_ext[idx_550])
@@ -91,7 +89,7 @@ def compute_mass_profile(
     H_m = scale_height_km * 1000.0
     rho_0_kg_m3 = optical_depth_550 / (beta_ext_per_mass_550 * H_m)
 
-    # Layer centers (descending) — match LoadedSpecies convention
+    # Layer centers (descending) — match MassProfile layer order
     alt = np.asarray(altitude_grid_km, dtype=float)
     alt_centers = 0.5 * (alt[:-1] + alt[1:])  # ascending layer centers
     # exp(-z/H) at each layer center
@@ -110,16 +108,15 @@ def build_composite_aerosol(bulk: BulkAerosolOpticsData, output_dir: Path) -> Co
         scale_height_km=SCALE_HEIGHT_KM,
     )
 
-    loaded = LoadedSpecies(
-        species=species,
-        mass_profile_kg_m3=mass_profile.tolist(),
-        altitude_km=list(ALTITUDE_GRID_KM),
+    placed = PlacedBlock(
+        block=species,
+        profile=MassProfile(kg_m3_per_layer=tuple(mass_profile.tolist())),
     )
 
     wavelengths_um = (np.asarray(WAVELENGTHS_NM, dtype=float) / 1000.0).tolist()
 
     aerosol = CompositeAerosol(
-        sources=[loaded],
+        pieces=[placed],
         wavelength_grid_um=wavelengths_um,
         altitude_grid_km=list(ALTITUDE_GRID_KM),
         n_legendre=N_LEGENDRE,
