@@ -100,27 +100,18 @@ def main():
         mono_total = _total_downward(mono)
     bulk_total = _total_downward(bulk)
 
-    fig, (ax_top, ax_bot) = plt.subplots(
-        2, 1, figsize=(8, 6), sharex=True, gridspec_kw={"height_ratios": [2, 1]}
+    from Aerosol3D.optics.rt_visualization import build_comparison_figure, save
+
+    # Wrap the computed surface totals as 1-D datasets; build_comparison_figure
+    # draws the bulk-vs-monodisperse panels (and interpolates if grids differ).
+    bulk_1d = xr.Dataset(
+        {"edir": (("wavelength",), bulk_total)}, coords={"wavelength": wl_bulk}
     )
-
-    ax_top.plot(wl_bulk, bulk_total, "b-", label="Bulk (lognormal)", linewidth=1.5)
-    ax_top.plot(wl_bulk, mono_total, "r--", label="Monodisperse", linewidth=1.5)
-    ax_top.set_ylabel("Total downward irradiance\n(edir + edn)")
-    ax_top.set_title("Bulk vs. Monodisperse: surface downward irradiance")
-    ax_top.legend(loc="best")
-    ax_top.grid(True, alpha=0.3)
-
-    ax_bot.plot(wl_bulk, rel_diff(bulk_total, mono_total), "g-", linewidth=1.0)
-    ax_bot.axhline(0, color="k", linewidth=0.5)
-    ax_bot.set_xlabel("Wavelength (nm)")
-    ax_bot.set_ylabel("Relative diff. (%)")
-    ax_bot.set_title("Bulk relative to monodisperse")
-    ax_bot.grid(True, alpha=0.3)
-
-    fig.tight_layout()
-    fig.savefig(COMPARE_PNG)
-    plt.close(fig)
+    mono_1d = xr.Dataset(
+        {"edir": (("wavelength",), mono_total)}, coords={"wavelength": wl_bulk}
+    )
+    fig = build_comparison_figure(bulk_1d, mono_1d, variable="edir")
+    save(fig, str(COMPARE_PNG), formats=("png",))
     logger.info("Saved comparison plot -> %s", COMPARE_PNG)
 
     # Also log a small numeric summary at 550 nm.
