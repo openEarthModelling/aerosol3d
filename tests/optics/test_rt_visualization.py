@@ -7,8 +7,10 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 import xarray as xr
 
+pytest.importorskip("pyradtran.viz")  # needs pyradtran with the viz layer (sibling pyRadtran repo)
 from Aerosol3D.optics.rt_visualization import build_comparison_figure, plot_spectral
 
 

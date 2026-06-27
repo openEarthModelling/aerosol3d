@@ -36,6 +36,9 @@ html_short_title = "Aerosol3D"
 autodoc_member_order = "bysource"
 autodoc_typehints = "description"
 autoclass_content = "both"
+# Mock imports not available in the docs build env: pyradtran (with the viz
+# layer) is provided by the sibling pyRadtran repo, not a hard dependency here.
+autodoc_mock_imports = ["pyradtran"]
 
 # Autosummary
 autosummary_generate = True
