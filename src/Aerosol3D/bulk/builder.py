@@ -274,6 +274,30 @@ class BulkOpticsBuilder:
 
         r_eff_nm = self.size_distribution.effective_radius()
 
+        # Dual Legendre form: g_l = k_l / (2l+1)
+        legendre_moments_beta = None
+        if bulk_beta is not None:
+            l_vals = np.arange(self.n_legendre)
+            legendre_moments_beta = bulk_beta / (2.0 * l_vals + 1.0)
+
+        # Effective (volume-weighted) density from per-entry material density
+        effective_density_kg_m3 = None
+        densities = [
+            (r, self._entries[r].density_kg_m3)
+            for r in self._entries
+            if self._entries[r].density_kg_m3 is not None
+        ]
+        if len(densities) == len(self._entries) and densities:
+            from Aerosol3D.bulk.density import compute_effective_density
+
+            effective_density_kg_m3 = compute_effective_density(
+                np.array([r for r, _ in densities]),
+                np.array([d for _, d in densities]),
+                self.size_distribution,
+                n_quad=n_quad,
+                method=integration,
+            )
+
         return BulkAerosolOpticsData(
             wavelength_nm=wavelengths.copy(),
             C_ext=bulk_C_ext,
@@ -295,4 +319,6 @@ class BulkOpticsBuilder:
             integration_n_points=n_quad,
             fallback_used=bool(np.any(fallback_mask)),
             fallback_wavelengths=fallback_wavelengths if fallback_wavelengths else None,
+            legendre_moments_beta=legendre_moments_beta,
+            effective_density_kg_m3=effective_density_kg_m3,
         )

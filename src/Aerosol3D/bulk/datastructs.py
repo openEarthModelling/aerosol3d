@@ -234,6 +234,12 @@ class BulkAerosolOpticsData:
     # beta[l] = k_l / k_0, therefore beta[..., 0] == 1 by construction.
     beta: np.ndarray  # (n_wavelength, n_legendre)
     n_legendre: int
+    # Dual-form companion to ``beta``: this is the g_l = k_l/(2l+1) coefficient
+    # form (what libRadtran `aerosol_file explicit` expects), NOT the k_l/k_0
+    # normalized form stored in ``beta`` above. Storing both lets consumers
+    # (e.g. pyRadtran BulkSpecies) pick the right one without runtime conversion.
+    legendre_moments_beta: np.ndarray | None = None  # (n_wavelength, n_legendre)
+    effective_density_kg_m3: float | None = None  # volume-weighted density for per-mass conversion
 
     # Optional phase function grids -----------------------------------------
     theta_rad: np.ndarray | None = None
