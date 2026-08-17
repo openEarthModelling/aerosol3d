@@ -18,7 +18,6 @@ Usage:
 """
 
 import argparse
-import sys
 from pathlib import Path
 
 EXAMPLE_DIR = Path(__file__).parent
@@ -34,7 +33,8 @@ def main():
     OUTPUT_DIR.mkdir(exist_ok=True)
 
     # --- Step 1: Generate fractal aggregate ---
-    from pyFracAggregate import generate as gen_fractal, Monodisperse
+    from pyFracAggregate import Monodisperse
+    from pyFracAggregate import generate as gen_fractal
 
     print("Generating BC fractal aggregate (50 monomers, PCA, Df=1.8)...")
     agg = gen_fractal(
@@ -47,7 +47,7 @@ def main():
     print(f"  Generated: {agg.current_size} monomers, unit={agg.length_unit}")
 
     # --- Step 2: Convert to AerosolParticle ---
-    from Aerosol3D import from_fractal, save_screenshot, save_rotation_video, preset_material
+    from Aerosol3D import from_fractal, preset_material, save_rotation_video, save_screenshot
 
     soot = preset_material("black_carbon")
     fractal = from_fractal(agg, soot)
@@ -78,15 +78,15 @@ def main():
         print("Optical computation skipped (--no-optics).")
         return
 
-    from Aerosol3D import solve_optics, SimulationConfig
-    from Aerosol3D.optics.visualization import print_macroscopic, plot_phase_function_2d
+    from Aerosol3D import SimulationConfig, solve_optics
+    from Aerosol3D.optics.visualization import plot_phase_function_2d, print_macroscopic
 
     config = SimulationConfig(
         wavelength=550.0,
         source="solar",
     )
 
-    print(f"\nRunning DDA solve ...")
+    print("\nRunning DDA solve ...")
     result = solve_optics(
         particle,
         config,

@@ -11,6 +11,7 @@ Usage:
 import logging
 
 import numpy as np
+from config import BLOCKS, N_LEGENDRE, WAVELENGTHS_NM, bulk_nc
 
 from Aerosol3D import (
     AerosolParticle,
@@ -22,8 +23,6 @@ from Aerosol3D import (
 )
 from Aerosol3D.bulk import BulkOpticsBuilder, SizeDistribution
 from Aerosol3D.optics.optics_export import from_optical_results
-
-from config import BLOCKS, N_LEGENDRE, WAVELENGTHS_NM, bulk_nc
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -80,7 +79,11 @@ def main():
     for b in BLOCKS:
         logger.info(
             "  [%s] material=%s lognormal(rg=%.1f nm, sigma_ln=%.2f), tau@550=%.2f",
-            b["name"], b["material"], b["rg_nm"], b["sigma_ln"], b["tau_550"],
+            b["name"],
+            b["material"],
+            b["rg_nm"],
+            b["sigma_ln"],
+            b["tau_550"],
         )
         sd = SizeDistribution.lognormal(rg_nm=b["rg_nm"], sigma_ln=b["sigma_ln"])
         bulk = _build_bulk(b["radii_nm"], b["material"], sd, N_LEGENDRE)

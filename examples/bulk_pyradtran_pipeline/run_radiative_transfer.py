@@ -18,13 +18,6 @@ import os
 from pathlib import Path
 
 import numpy as np
-
-from Aerosol3D.bulk import BulkAerosolOpticsData
-
-from pyradtran import Scene, Runner
-from pyradtran.models.aerosol_composite import BulkSpecies, CompositeAerosol
-from pyradtran.models.blocks import MassProfile, PlacedBlock
-
 from config import (
     ALTITUDE_GRID_KM,
     BULK_OPTICS_NC,
@@ -33,11 +26,16 @@ from config import (
     N_LEGENDRE,
     RT_BULK_NC,
     RT_MONODISPERSE_NC,
-    SCENE_CONFIG,
     SCALE_HEIGHT_KM,
+    SCENE_CONFIG,
     TOTAL_OPTICAL_DEPTH_550,
     WAVELENGTHS_NM,
 )
+from pyradtran import Runner, Scene
+from pyradtran.models.aerosol_composite import BulkSpecies, CompositeAerosol
+from pyradtran.models.blocks import MassProfile, PlacedBlock
+
+from Aerosol3D.bulk import BulkAerosolOpticsData
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)

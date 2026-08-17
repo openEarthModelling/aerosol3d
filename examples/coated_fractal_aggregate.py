@@ -26,11 +26,12 @@ WAVELENGTHS = [450.0, 550.0, 650.0, 800.0]
 
 def build_coated_particle():
     """Generate a BC fractal aggregate with potential void-filling coating."""
-    from pyFracAggregate import generate as gen_fractal, Monodisperse
+    from pyFracAggregate import Monodisperse
+    from pyFracAggregate import generate as gen_fractal
 
     from Aerosol3D import (
-        from_fractal,
         apply_potential_void_coating,
+        from_fractal,
         preset_material,
     )
 
@@ -169,7 +170,7 @@ def plot_comparison(datasets, labels, output_dir):
             )
         ax.axhline(0, color="k", linewidth=0.5)
         ax.set_xlabel("Wavelength (nm)")
-        ax.set_ylabel(f"Relative diff. (%)")
+        ax.set_ylabel("Relative diff. (%)")
         ax.set_title(f"Δ{title}")
         ax.legend(fontsize=8)
         ax.grid(True, alpha=0.3)
@@ -207,8 +208,9 @@ def plot_comparison(datasets, labels, output_dir):
             if ds.P11 is not None:
                 P11 = np.mean(ds.P11[i_wl], axis=1)
                 theta_deg = np.degrees(ds.theta_rad)
-                ax.semilogy(theta_deg, np.maximum(P11, 1e-30),
-                             color=colors[i], label=name, linewidth=1.5)
+                ax.semilogy(
+                    theta_deg, np.maximum(P11, 1e-30), color=colors[i], label=name, linewidth=1.5
+                )
         ax.set_xlabel("Scattering angle (°)")
         ax.set_ylabel("P11 (log)")
         ax.set_title(f"Phase function @ {wl:.0f} nm (log)")
@@ -248,8 +250,14 @@ def plot_comparison(datasets, labels, output_dir):
         ax.set_title(f"{title} @ {ref_wl:.0f} nm")
         ax.grid(True, alpha=0.3, axis="y")
         for bar, val in zip(bars, vals):
-            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(),
-                    f"{val:.3f}", ha="center", va="bottom", fontsize=8)
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height(),
+                f"{val:.3f}",
+                ha="center",
+                va="bottom",
+                fontsize=8,
+            )
 
     fig.suptitle(f"Mie Approximation Summary @ {ref_wl:.0f} nm", fontsize=13)
     fig.tight_layout()
@@ -262,10 +270,10 @@ def plot_comparison(datasets, labels, output_dir):
 def generate_visualizations(particle, soot, sulfate, args):
     """Generate 3D screenshots and rotation videos."""
     from Aerosol3D import (
-        save_screenshot,
-        save_rotation_video,
         save_particle_voxel_screenshot,
         save_particle_voxel_video,
+        save_rotation_video,
+        save_screenshot,
     )
 
     print("\nGenerating 3D visualizations...")

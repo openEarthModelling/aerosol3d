@@ -30,3 +30,4 @@ aerosol/
 randomseed
 docs/_build/
 docs/sphinx-docs-implementation-plan.md
+/Manifest.toml

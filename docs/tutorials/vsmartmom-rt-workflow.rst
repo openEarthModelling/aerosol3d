@@ -162,7 +162,7 @@ See Also
 
 * :doc:`../user-guide/vsmartmom-integration` — Full API reference and
   architecture documentation
-* :doc:`dda-mie-pyradtran-pipeline` — Alternative RT pipeline using
+* ``examples/bulk_pyradtran_pipeline/`` — Alternative RT pipeline using
   pyRadtran/DISORT
 * :doc:`bulk-optics-workflow` — How to generate the ``BulkAerosolOpticsData``
   input used in this tutorial

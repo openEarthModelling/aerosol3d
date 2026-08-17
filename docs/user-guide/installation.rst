@@ -48,7 +48,7 @@ Additional Optional Dependencies
 - **NetCDF I/O** — Requires ``xarray`` and ``netCDF4`` for
   ``AerosolOpticsData.to_netcdf()`` / ``.from_netcdf()``
 - **Radiative transfer pipeline** — Requires ``pyRadtran`` and libRadtran
-  (see the :doc:`/tutorials/dda-mie-pyradtran-pipeline` tutorial).
+  (see the ``examples/bulk_pyradtran_pipeline/`` directory).
   Set ``PYRADTRAN_DATA_PATH`` to the libRadtran data directory.
 - **Parallel orientation averaging** — ``tqdm`` and ``joblib`` are installed
   automatically with Aerosol3D.  They provide progress bars and multi-core

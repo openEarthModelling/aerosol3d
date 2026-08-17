@@ -32,9 +32,17 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-
-from Aerosol3D.bulk import BulkAerosolOpticsData
-
+from config import (
+    ALTITUDE_GRID_KM,
+    BLOCKS,
+    LIBRADTRAN_DATA,
+    N_LEGENDRE,
+    OUTPUT_DIR,
+    REF_NM,
+    SCENE_CONFIG,
+    WAVELENGTHS_NM,
+    bulk_nc,
+)
 from pyradtran import Runner, Scene
 from pyradtran.core.output_parser import HEATING_RATE_COLUMN
 from pyradtran.core.postprocess import (
@@ -58,7 +66,7 @@ from pyradtran.viz import (
 )
 from pyradtran.workflow import compute_component_attribution
 
-from config import ALTITUDE_GRID_KM, BLOCKS, LIBRADTRAN_DATA, N_LEGENDRE, OUTPUT_DIR, REF_NM, SCENE_CONFIG, WAVELENGTHS_NM, bulk_nc
+from Aerosol3D.bulk import BulkAerosolOpticsData
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -105,7 +113,9 @@ def build_scene(aerosol: CompositeAerosol) -> Scene:
     cfg = SCENE_CONFIG
     return (
         Scene()
-        .set_atmosphere(profile=cfg["atmosphere"]["profile"], altitude=cfg["atmosphere"]["altitude"])
+        .set_atmosphere(
+            profile=cfg["atmosphere"]["profile"], altitude=cfg["atmosphere"]["altitude"]
+        )
         .set_source_solar(sza=cfg["source"]["sza"])
         .set_wavelength(cfg["wavelength"]["min_nm"], cfg["wavelength"]["max_nm"])
         .set_solver(

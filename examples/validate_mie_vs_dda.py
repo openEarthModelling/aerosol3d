@@ -19,9 +19,7 @@ def run_mie(particle, wavelength=550.0):
 def run_dda(particle, wavelength=550.0, precision="high"):
     """Run DDA solver with auto voxel_size for given precision level."""
     config = SimulationConfig(wavelength=wavelength, n_host=1.0, precision=precision)
-    return solve_optics(
-        particle, config, solver="DDA", compute_phase_func=True, verbose=False
-    )
+    return solve_optics(particle, config, solver="DDA", compute_phase_func=True, verbose=False)
 
 
 def print_comparison(mie, dda_results, precisions):
@@ -109,12 +107,13 @@ def plot_results(mie, dda_results, precisions):
     ax.set_title("DDA Convergence with LDR Polarizability")
 
     for i, prec in enumerate(precisions):
-        ax.annotate(prec, (n_dips[i], err_g[i]), textcoords="offset points",
-                    xytext=(10, 5), fontsize=9)
+        ax.annotate(
+            prec, (n_dips[i], err_g[i]), textcoords="offset points", xytext=(10, 5), fontsize=9
+        )
 
     plt.tight_layout()
     plt.savefig("mie_vs_dda_phase_function.png", dpi=150)
-    print(f"\nPlot saved: mie_vs_dda_phase_function.png")
+    print("\nPlot saved: mie_vs_dda_phase_function.png")
 
 
 def main():

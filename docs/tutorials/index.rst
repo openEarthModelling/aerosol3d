@@ -11,7 +11,6 @@ Step-by-step tutorials for common Aerosol3D workflows.
    coated-fractal-aggregate
    fractal-aggregate
    mie-vs-dda-validation
-   dda-mie-pyradtran-pipeline
    bulk-optics-workflow
    bulk-cross-validation
    vsmartmom-rt-workflow
