@@ -48,8 +48,9 @@ def compute_g_from_phase_function(theta_rad: np.ndarray, P11: np.ndarray) -> flo
     sin_theta = np.sin(theta_rad)
     cos_theta = np.cos(theta_rad)
 
-    numerator = np.trapz(P11 * cos_theta * sin_theta, theta_rad)
-    denominator = np.trapz(P11 * sin_theta, theta_rad)
+    _trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
+    numerator = _trapz(P11 * cos_theta * sin_theta, theta_rad)
+    denominator = _trapz(P11 * sin_theta, theta_rad)
 
     if abs(denominator) < 1e-30:
         return float("nan")

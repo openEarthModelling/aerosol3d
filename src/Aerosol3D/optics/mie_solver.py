@@ -1,12 +1,8 @@
 """MIE optical solver using PyMieScatt."""
 
 import numpy as np
-import scipy.integrate
 
 from .datastructs import CrossSections, OpticalResult, PhaseFunction, SimulationConfig
-
-if not hasattr(scipy.integrate, "trapz"):
-    scipy.integrate.trapz = scipy.integrate.trapezoid
 
 _trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
 
