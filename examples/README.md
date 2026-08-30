@@ -27,8 +27,11 @@ Comprehensive validation suite for bulk optics computation.
 
 ## Pipeline Examples
 
-### `dda_mie_pyradtran_pipeline/`
-Three-stage pipeline (DDA/Mie → pyRadtran DISORT RT → comparison).
+### `bulk_pyradtran_pipeline/`
+Three-stage pipeline (bulk aerosol optics → pyRadtran DISORT RT → comparison).
+
+### `multicomponent_pipeline/`
+Multi-component LEGO-block DISORT pipeline with visualization suite and component attribution.
 
 ## vSmartMOM Radiative Transfer
 

@@ -31,7 +31,8 @@ class TestSizeDistributionPDF:
         sd = SizeDistribution.lognormal(rg_nm=100.0, sigma_ln=0.5)
         r = np.logspace(0, 4, 2000)
         vals = sd.pdf_values(r)
-        integral = np.trapz(vals, r)
+        _trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
+        integral = _trapz(vals, r)
         assert integral == pytest.approx(1.0, abs=1e-3)
 
     def test_pdf_zero_at_non_positive(self):

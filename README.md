@@ -88,7 +88,8 @@ See the [`examples/`](examples/) directory for complete workflows including frac
 | [`black_carbon_fractal.py`](examples/black_carbon_fractal.py) | Fractal aggregate via pyFracAggregate with full pipeline |
 | [`coated_fractal_aggregate.py`](examples/coated_fractal_aggregate.py) | Coated fractal aggregate comparing four Mie approximations (volume-weighted, MG, Bruggeman, core-shell) |
 | [`validate_mie_vs_dda.py`](examples/validate_mie_vs_dda.py) | Multi-precision DDA vs Mie validation with LDR convergence analysis |
-| [`dda_mie_pyradtran_pipeline/`](examples/dda_mie_pyradtran_pipeline/) | 3-stage DDA/Mie optics + DISORT radiative transfer pipeline |
+| [`bulk_pyradtran_pipeline/`](examples/bulk_pyradtran_pipeline/) | 3-stage bulk aerosol optics → DISORT radiative transfer pipeline |
+| [`multicomponent_pipeline/`](examples/multicomponent_pipeline/) | Multi-component LEGO-block DISORT pipeline with component attribution |
 
 ## API Overview
 

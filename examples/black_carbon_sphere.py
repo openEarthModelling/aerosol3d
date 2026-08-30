@@ -7,7 +7,6 @@ Usage:
 """
 
 import argparse
-import sys
 from pathlib import Path
 
 EXAMPLE_DIR = Path(__file__).parent
@@ -23,7 +22,13 @@ def main():
     OUTPUT_DIR.mkdir(exist_ok=True)
 
     # --- Step 1: Create bare BC sphere ---
-    from Aerosol3D import AerosolParticle, create_sphere, MixingState, save_screenshot, preset_material
+    from Aerosol3D import (
+        AerosolParticle,
+        MixingState,
+        create_sphere,
+        preset_material,
+        save_screenshot,
+    )
 
     soot = preset_material("black_carbon")
     radius_nm = 50.0
@@ -52,15 +57,15 @@ def main():
         print("Optical computation skipped (--no-optics).")
         return
 
-    from Aerosol3D import solve_optics, SimulationConfig
-    from Aerosol3D.optics.visualization import print_macroscopic, plot_phase_function_2d
+    from Aerosol3D import SimulationConfig, solve_optics
+    from Aerosol3D.optics.visualization import plot_phase_function_2d, print_macroscopic
 
     config = SimulationConfig(
         wavelength=550.0,
         source="solar",
     )
 
-    print(f"\nRunning DDA solve ...")
+    print("\nRunning DDA solve ...")
     result = solve_optics(
         particle,
         config,

@@ -140,7 +140,9 @@ def _print_setup(bulk: BulkAerosolOpticsData) -> None:
         )
 
     print("\n  Vertical Profile:")
-    print(f"    {'Layer':>8} | {'z_bottom (m)':>14} | {'z_top (m)':>12} | {'dz (m)':>10} | {'N (cm⁻³)':>10}")
+    print(
+        f"    {'Layer':>8} | {'z_bottom (m)':>14} | {'z_top (m)':>12} | {'dz (m)':>10} | {'N (cm⁻³)':>10}"
+    )
     print(f"    {'-' * 65}")
     dz = np.diff(HEIGHTS_M)
     for i in range(len(NUMBER_CONC_CM3)):
@@ -150,9 +152,13 @@ def _print_setup(bulk: BulkAerosolOpticsData) -> None:
         )
 
     # Compute layer optical depths
-    tau_per_layer = NUMBER_CONC_CM3[np.newaxis, :] * bulk.C_ext[:, np.newaxis] * dz[np.newaxis, :] * 1e-6
+    tau_per_layer = (
+        NUMBER_CONC_CM3[np.newaxis, :] * bulk.C_ext[:, np.newaxis] * dz[np.newaxis, :] * 1e-6
+    )
     print("\n  Layer Optical Depths:")
-    print(f"    {'λ (nm)':>10} | {'τ_layer 1':>12} | {'τ_layer 2':>12} | {'τ_layer 3':>12} | {'τ_total':>12}")
+    print(
+        f"    {'λ (nm)':>10} | {'τ_layer 1':>12} | {'τ_layer 2':>12} | {'τ_layer 3':>12} | {'τ_total':>12}"
+    )
     print(f"    {'-' * 65}")
     for i, wl in enumerate(bulk.wavelength_nm):
         print(
@@ -182,7 +188,15 @@ def _plot_results(result: VSmartMOMResult, output_dir: Path) -> None:
     for j, w in enumerate(wl):
         color = wl_colors.get(float(w), "#333333")
         # R shape: [n_stokes, n_vza, n_wl]; take Stokes I (index 0)
-        ax1.plot(result.vza, result.R[0, :, j], "o-", color=color, label=f"{w:.0f} nm", markersize=8, lw=2)
+        ax1.plot(
+            result.vza,
+            result.R[0, :, j],
+            "o-",
+            color=color,
+            label=f"{w:.0f} nm",
+            markersize=8,
+            lw=2,
+        )
 
     ax1.set_xlabel("Viewing Zenith Angle (°)", fontsize=12)
     ax1.set_ylabel("TOA Reflectance R", fontsize=12)
@@ -200,7 +214,15 @@ def _plot_results(result: VSmartMOMResult, output_dir: Path) -> None:
     fig2, ax2 = plt.subplots(figsize=(10, 6))
     for j, w in enumerate(wl):
         color = wl_colors.get(float(w), "#333333")
-        ax2.plot(result.vza, result.T[0, :, j], "s-", color=color, label=f"{w:.0f} nm", markersize=8, lw=2)
+        ax2.plot(
+            result.vza,
+            result.T[0, :, j],
+            "s-",
+            color=color,
+            label=f"{w:.0f} nm",
+            markersize=8,
+            lw=2,
+        )
 
     ax2.set_xlabel("Viewing Zenith Angle (°)", fontsize=12)
     ax2.set_ylabel("BOA Transmittance T", fontsize=12)
@@ -281,8 +303,8 @@ def main() -> int:
         print("    1. Download Julia from https://julialang.org/downloads/")
         print("    2. Install vSmartMOM in a Julia project:")
         print("       julia> using Pkg")
-        print("       julia> Pkg.activate(\"path/to/project\")")
-        print("       julia> Pkg.add(\"vSmartMOM\")")
+        print('       julia> Pkg.activate("path/to/project")')
+        print('       julia> Pkg.add("vSmartMOM")')
         print()
         print("    3. Run this example with --julia-project:")
         print("       python examples/vsmartmom_rt_demo.py --julia-project /path/to/project")

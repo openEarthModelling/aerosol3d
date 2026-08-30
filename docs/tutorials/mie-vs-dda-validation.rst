@@ -55,7 +55,7 @@ Step-by-Step Explanation
 Further Analysis
 -----------------
 
-For multi-wavelength comparison with the full visualization toolkit, see
-the :doc:`dda-mie-pyradtran-pipeline` tutorial which uses
+For multi-wavelength comparison with the full visualization toolkit, use
+``Aerosol3D.optics.visualization``, which provides
 ``plot_optical_comparison()``, ``plot_phase_function_comparison()``, and
 ``generate_comparison_summary()`` for detailed DDA vs Mie analysis.

@@ -16,7 +16,6 @@ matplotlib.use("Agg")  # headless backend for CI / remote runs
 import matplotlib.pyplot as plt
 import numpy as np
 import xarray as xr
-
 from config import COMPARE_PNG, RT_BULK_NC, RT_MONODISPERSE_NC
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -104,12 +103,8 @@ def main():
 
     # Wrap the computed surface totals as 1-D datasets; build_comparison_figure
     # draws the bulk-vs-monodisperse panels (and interpolates if grids differ).
-    bulk_1d = xr.Dataset(
-        {"edir": (("wavelength",), bulk_total)}, coords={"wavelength": wl_bulk}
-    )
-    mono_1d = xr.Dataset(
-        {"edir": (("wavelength",), mono_total)}, coords={"wavelength": wl_bulk}
-    )
+    bulk_1d = xr.Dataset({"edir": (("wavelength",), bulk_total)}, coords={"wavelength": wl_bulk})
+    mono_1d = xr.Dataset({"edir": (("wavelength",), mono_total)}, coords={"wavelength": wl_bulk})
     fig = build_comparison_figure(bulk_1d, mono_1d, variable="edir")
     save(fig, str(COMPARE_PNG), formats=("png",))
     logger.info("Saved comparison plot -> %s", COMPARE_PNG)

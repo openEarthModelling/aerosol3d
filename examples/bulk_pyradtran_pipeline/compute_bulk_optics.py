@@ -16,6 +16,17 @@ Usage:
 import logging
 
 import numpy as np
+from config import (
+    BULK_OPTICS_NC,
+    MATERIAL,
+    MONODISPERSE_OPTICS_NC,
+    N_LEGENDRE,
+    R_EFF_MONODISPERSE_NM,
+    RADII_NM,
+    RG_NM,
+    SIGMA_LN,
+    WAVELENGTHS_NM,
+)
 
 from Aerosol3D import (
     AerosolParticle,
@@ -27,18 +38,6 @@ from Aerosol3D import (
 )
 from Aerosol3D.bulk import BulkOpticsBuilder, SizeDistribution
 from Aerosol3D.optics.optics_export import from_optical_results
-
-from config import (
-    BULK_OPTICS_NC,
-    MATERIAL,
-    MONODISPERSE_OPTICS_NC,
-    N_LEGENDRE,
-    RADII_NM,
-    R_EFF_MONODISPERSE_NM,
-    RG_NM,
-    SIGMA_LN,
-    WAVELENGTHS_NM,
-)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
